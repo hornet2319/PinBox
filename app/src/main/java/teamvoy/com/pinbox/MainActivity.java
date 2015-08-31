@@ -3,23 +3,26 @@ package teamvoy.com.pinbox;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,16 +31,15 @@ import android.widget.Toast;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
+import com.pinterest.android.pdk.PDKPin;
 import com.pinterest.android.pdk.PDKResponse;
 import com.pinterest.android.pdk.PDKUser;
-import com.squareup.picasso.Picasso;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import teamvoy.com.pinbox.adapters.PinsRecyclerAdapter;
+import teamvoy.com.pinbox.fragments.PinsFragment;
 import teamvoy.com.pinbox.utils.ImageLoaderUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,18 +58,21 @@ public class MainActivity extends AppCompatActivity {
         //initialize pdk
         PDKClient.configureInstance(this, getString(R.string.app_id));
         PDKClient.getInstance().onConnect(this);
+        PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_title_strip);
 
+        pagerTabStrip.setDrawFullUnderline(false);
+        pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.red_dark));
         final ViewPager viewPager = (ViewPager) findViewById(R.id.tabanim_viewpager);
         setupViewPager(viewPager);
 
-        user_img=(ImageView)findViewById(R.id.user_img);
+
         user_txt=(TextView)findViewById(R.id.user_textview);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+      //  TabLayout tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
+      //  tabLayout.setupWithViewPager(viewPager);
 
         onLogin();
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+     /*   tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
@@ -97,8 +102,9 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
+        }); */
     }
+
     public void onLogin(){
         PDKClient pdkClient=PDKClient.getInstance();
         List scopes = new ArrayList<String>();
@@ -117,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                img_util.getImageLoader().displayImage(user.getImageUrl(), user_img);
-                Log.d("IMAGE URL", user.getImageUrl());
+
             }
 
             @Override
@@ -133,9 +138,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.accent_material_light)), "CAT");
-        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_light)), "DOG");
-        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.button_material_dark)), "MOUSE");
+        adapter.addFrag(new PinsFragment(), "Pins");
+        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_light)), "Boards");
+        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_light)), "Likes");
+        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_dark)), "Subscriptions");
+        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_dark)), "Followers");
         viewPager.setAdapter(adapter);
     }
 
@@ -154,11 +161,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case R.id.action_logout: {
+                PDKClient.getInstance().logout();
                 finish();
-                return true;
-            case R.id.action_settings:
-                return true;
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -199,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class DummyFragment extends Fragment {
         int color;
-        SimpleRecyclerAdapter adapter;
+        PinsRecyclerAdapter adapter;
 
         public DummyFragment() {
         }
@@ -218,20 +225,30 @@ public class MainActivity extends AppCompatActivity {
 
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dummyfrag_scrollableview);
 
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
-            recyclerView.setLayoutManager(linearLayoutManager);
+
+            StaggeredGridLayoutManager staggeredLayoutManager = new StaggeredGridLayoutManager(2,1);
+            Display display = ((WindowManager) getActivity().getSystemService(WINDOW_SERVICE))
+                    .getDefaultDisplay();
+
+            int orientation = display.getRotation();
+
+            if (orientation == Surface.ROTATION_90
+                    || orientation == Surface.ROTATION_270) {
+                // TODO: add logic for landscape mode here
+                staggeredLayoutManager = new StaggeredGridLayoutManager(3,1);
+            }
+            recyclerView.setLayoutManager(staggeredLayoutManager);
             recyclerView.setHasFixedSize(true);
 
-            List<String> list = new ArrayList<String>();
-            for (int i = 0; i < VersionModel.data.length; i++) {
-                list.add(VersionModel.data[i]);
-            }
+            List<PDKPin> list = new ArrayList<>();
 
-            adapter = new SimpleRecyclerAdapter(list);
+
+            adapter = new PinsRecyclerAdapter(list);
             recyclerView.setAdapter(adapter);
 
             return view;
         }
+
     }
 
 }

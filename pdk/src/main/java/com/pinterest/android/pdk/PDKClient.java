@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,7 @@ public class PDKClient {
     private static final String PDK_SHARED_PREF_FILE_KEY = "com.pinterest.android.pdk.PREF_FILE_KEY";
     private static final String PDK_SHARED_PREF_TOKEN_KEY = "PDK_SHARED_PREF_TOKEN_KEY";
     private static final String PDK_SHARED_PREF_SCOPES_KEY = "PDK_SHARED_PREF_SCOPES_KEY";
+    private static final String PDK_SHARED_PREF_SCOPES_KEY_JSON = "PDK_SHARED_PREF_SCOPES_KEY_JSON";
     private static final int PDKCLIENT_REQUEST_CODE = 8772;
     private static final String VOLLEY_TAG = "volley_tag";
 
@@ -151,7 +154,10 @@ public class PDKClient {
         }
         _requestedScopes = new HashSet<String>();
         _requestedScopes.addAll(permissions);
+
+
         if (!Utils.isEmpty(_accessToken) && !Utils.isEmpty(_scopes)) {
+
             getPath("oauth/inspect", null, new PDKCallback() {
                 @Override
                 public void onSuccess(PDKResponse response) {
@@ -391,6 +397,8 @@ public class PDKClient {
                 _isAuthenticated = true;
                 PDKClient.getInstance().getMe(_authCallback);
                 saveAccessToken(_accessToken);
+                saveScopes(_requestedScopes);
+
             }
             if (uri.getQueryParameter("error") != null) {
                 String error = uri.getQueryParameter("error");
@@ -512,24 +520,51 @@ public class PDKClient {
         SharedPreferences sharedPref = _context.getSharedPreferences(PDK_SHARED_PREF_FILE_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(PDK_SHARED_PREF_TOKEN_KEY, accessToken);
-        editor.commit();
+        editor.apply();
     }
 
     private static String restoreAccessToken() {
         SharedPreferences sharedPref = _context.getSharedPreferences(PDK_SHARED_PREF_FILE_KEY, Context.MODE_PRIVATE);
+
         return sharedPref.getString(PDK_SHARED_PREF_TOKEN_KEY, null);
     }
 
     private void saveScopes(Set<String> perms) {
         SharedPreferences sharedPref = _context.getSharedPreferences(PDK_SHARED_PREF_FILE_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putStringSet(PDK_SHARED_PREF_SCOPES_KEY, perms);
-        editor.commit();
+        JSONArray a = new JSONArray();
+        if (perms!=null) {
+            for (String str : perms) {
+                a.put(str);
+            }
+
+            if (!perms.isEmpty()) {
+                editor.putString(PDK_SHARED_PREF_SCOPES_KEY_JSON, a.toString());
+            } else {
+                editor.putString(PDK_SHARED_PREF_SCOPES_KEY_JSON, null);
+            }
+            editor.commit();
+        }
     }
 
     private static Set<String> restoreScopes() {
         SharedPreferences sharedPref = _context.getSharedPreferences(PDK_SHARED_PREF_FILE_KEY, Context.MODE_PRIVATE);
-        return sharedPref.getStringSet(PDK_SHARED_PREF_SCOPES_KEY, new HashSet<String>());
+
+       // return sharedPref.getStringSet(PDK_SHARED_PREF_SCOPES_KEY, new HashSet<String>());
+        String json = sharedPref.getString(PDK_SHARED_PREF_SCOPES_KEY_JSON, null);
+        Set<String> urls = new HashSet<>();
+        if (json != null) {
+            try {
+                JSONArray a = new JSONArray(json);
+                for (int i = 0; i < a.length(); i++) {
+                    String url = a.optString(i);
+                    urls.add(url);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return urls;
     }
 
     private static RequestQueue getRequestQueue() {

@@ -3,7 +3,7 @@
     android:id="@+id/dummyfrag_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_material_light">
+    android:background="@color/dim_foreground_material_dark">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dummyfrag_scrollableview"

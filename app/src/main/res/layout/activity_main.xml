@@ -19,45 +19,55 @@
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.01dp"
+            android:background="@android:color/white"/>
         <android.support.v7.widget.Toolbar
             android:id="@+id/user_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/user_img"
-                    android:layout_width="60dp"
-                    android:background="@drawable/nopc"
-                    android:layout_height="?attr/actionBarSize"/>
+
                 <TextView
                     android:textColor="@color/white"
                     android:id="@+id/user_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_gravity="center_vertical" />
+                    android:textSize="18sp"
+                    android:layout_gravity="center_vertical|center_horizontal" />
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.01dp"
+            android:background="@android:color/white"/>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabanim_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/tabanim_viewpager"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+        <android.support.v4.view.PagerTabStrip
+            style="@style/viepagertitlestrip"
+            android:id="@+id/pager_title_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/primary_500"
+            android:textColor="@color/white"
+            android:paddingTop="5dp"
+            android:layout_marginBottom="5dp" />
+    </android.support.v4.view.ViewPager>
 
 </android.support.design.widget.CoordinatorLayout>
