@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (orientation == Surface.ROTATION_90
                     || orientation == Surface.ROTATION_270) {
-                // TODO: add logic for landscape mode here
+
                 staggeredLayoutManager = new StaggeredGridLayoutManager(3,1);
             }
             recyclerView.setLayoutManager(staggeredLayoutManager);

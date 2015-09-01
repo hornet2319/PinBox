@@ -32,7 +32,7 @@ public class PDKPin extends PDKModel {
         try {
             if (obj instanceof JSONObject) {
                 JSONObject dataObj = (JSONObject)obj;
-              //  Log.d("json",dataObj.toString());
+                Log.d("json pin",dataObj.toString());
                 if (dataObj.has("id")) {
                     pin.setUid(dataObj.getString("id"));
                 }
