@@ -1,8 +1,6 @@
 package teamvoy.com.pinbox.adapters;
 
-
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.pinterest.android.pdk.PDKPin;
+import com.pinterest.android.pdk.PDKUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -21,25 +19,22 @@ import teamvoy.com.pinbox.R;
 import teamvoy.com.pinbox.fragments.PinsFragment;
 
 /**
- * Created by Lubomyr Shershun on 30.08.2015.
- * l.sherhsun@gmail.com
+ * Created by lubomyrshershun on 9/1/15.
  */
-public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapter.VersionViewHolder> {
-    List<PDKPin> pinList;
-
-
+public class UsersRecyclerAdapter extends RecyclerView.Adapter<UsersRecyclerAdapter.VersionViewHolder> {
+    List<PDKUser> userList;
 
 
     Context context;
     OnItemClickListener clickListener;
 
 
-    public PinsRecyclerAdapter(Context context) {
-        this.context=context;
+    public UsersRecyclerAdapter(Context context) {
+        this.context = context;
     }
 
-    public PinsRecyclerAdapter(List<PDKPin> versionModels) {
-        this.pinList = versionModels;
+    public UsersRecyclerAdapter(List<PDKUser> versionModels) {
+        this.userList = versionModels;
 
     }
 
@@ -47,7 +42,7 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
     public VersionViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recyclerlist_item_pins, viewGroup, false);
         VersionViewHolder viewHolder = new VersionViewHolder(view);
-        if (pinList.size() - i < 5) {
+        if (userList.size() - i < 5) {
             PinsFragment.loadNext();
         }
         return viewHolder;
@@ -56,11 +51,10 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
     @Override
     public void onBindViewHolder(VersionViewHolder versionViewHolder, int i) {
 
-            versionViewHolder.title.setText(pinList.get(i).getNote());
-            versionViewHolder.subTitle.setText(pinList.get(i).getBoard().getName());
+        versionViewHolder.title.setText(userList.get(i).getUsername());
+     //   versionViewHolder.subTitle.setText(pinList.get(i).getBoard().getName());
 //        Log.d("Board","name="+pinList.get(i).getBoard().toString());
-            Picasso.with(context).load(pinList.get(i).getImageUrl()).into(versionViewHolder.imageView);
-
+        Picasso.with(context).load(userList.get(i).getImageUrl()).into(versionViewHolder.imageView);
 
 
     }
@@ -68,11 +62,11 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
 
     @Override
     public int getItemCount() {
-            return pinList == null ? 0 : pinList.size();
+        return userList == null ? 0 : userList.size();
     }
 
-    public void setPinList(List<PDKPin> pinList) {
-        this.pinList = pinList;
+    public void setUsersList(List<PDKUser> pinList) {
+        this.userList = pinList;
     }
 
 
@@ -85,12 +79,12 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
         public VersionViewHolder(View itemView) {
             super(itemView);
 
-            imageView=(ImageView)itemView.findViewById(R.id.cardlist_image);
+            imageView = (ImageView) itemView.findViewById(R.id.cardlist_image);
             cardItemLayout = (CardView) itemView.findViewById(R.id.cardlist_item);
             title = (TextView) itemView.findViewById(R.id.listitem_name);
-            subTitle = (TextView) itemView.findViewById(R.id.listitem_subname);
+          //  subTitle = (TextView) itemView.findViewById(R.id.listitem_subname);
 
-                itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
 
 
         }

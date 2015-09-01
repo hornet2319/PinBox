@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -8,40 +7,36 @@
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="@dimen/cardview_default_elevation"
     android:foreground="?android:attr/selectableItemBackground"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp">
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:padding="5dp"
+
         android:gravity="center_vertical"
-        android:layout_height="?attr/listPreferredItemHeight"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <ImageView
             android:id="@+id/cardlist_image"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.1dp"
+
+            android:layout_marginBottom="5dp"
+            android:background="@color/dim_foreground_material_dark"/>
         <TextView
             android:id="@+id/listitem_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="5dp"
             android:layout_height="wrap_content"
             android:text="Android version name"
             android:textColor="@color/primary_text_default_material_light"
             android:textSize="@dimen/abc_text_size_subhead_material" />
-
-        <TextView
-            android:id="@+id/listitem_subname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Test"
-            android:paddingTop="3dp"
-            android:textColor="@color/secondary_text_default_material_light"
-            android:textSize="@dimen/abc_text_size_caption_material" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

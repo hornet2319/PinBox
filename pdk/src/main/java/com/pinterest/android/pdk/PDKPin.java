@@ -1,5 +1,7 @@
 package com.pinterest.android.pdk;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,8 +16,8 @@ import java.util.List;
 public class PDKPin extends PDKModel {
 
     private String uid;
-    private PDKBoard board;
-    private PDKUser user;
+    private static PDKBoard board;
+    private static PDKUser user;
     private String link;
     private String note;
     private String metadata;
@@ -30,6 +32,7 @@ public class PDKPin extends PDKModel {
         try {
             if (obj instanceof JSONObject) {
                 JSONObject dataObj = (JSONObject)obj;
+              //  Log.d("json",dataObj.toString());
                 if (dataObj.has("id")) {
                     pin.setUid(dataObj.getString("id"));
                 }
@@ -58,10 +61,10 @@ public class PDKPin extends PDKModel {
                     pin.setMetadata(dataObj.getString("metadata"));
                 }
                 if (dataObj.has("creator")) {
-                    PDKUser.makeUser(dataObj.getJSONObject("creator"));
+                    user=(PDKUser.makeUser(dataObj.getJSONObject("creator")));
                 }
                 if (dataObj.has("board")) {
-                    PDKBoard.makeBoard(dataObj.getJSONObject("board"));
+                    board= PDKBoard.makeBoard(dataObj.getJSONObject("board"));
                 }
                 if (dataObj.has("created_at")) {
                     pin.setCreatedAt(

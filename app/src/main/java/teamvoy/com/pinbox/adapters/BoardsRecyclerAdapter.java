@@ -1,8 +1,6 @@
 package teamvoy.com.pinbox.adapters;
 
-
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,22 +9,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
+import com.pinterest.android.pdk.PDKBoard;
 import com.pinterest.android.pdk.PDKPin;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import teamvoy.com.pinbox.R;
-import teamvoy.com.pinbox.fragments.PinsFragment;
+import teamvoy.com.pinbox.fragments.BoardsFragment;
 
 /**
- * Created by Lubomyr Shershun on 30.08.2015.
- * l.sherhsun@gmail.com
+ * Created by lubomyrshershun on 9/1/15.
  */
-public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapter.VersionViewHolder> {
-    List<PDKPin> pinList;
-
+public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAdapter.VersionViewHolder> {
+    List<PDKBoard> boardList;
 
 
 
@@ -34,47 +30,51 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
     OnItemClickListener clickListener;
 
 
-    public PinsRecyclerAdapter(Context context) {
+
+    public BoardsRecyclerAdapter(Context context) {
         this.context=context;
     }
 
-    public PinsRecyclerAdapter(List<PDKPin> versionModels) {
-        this.pinList = versionModels;
+    public BoardsRecyclerAdapter(List<PDKBoard> versionModels) {
+        this.boardList = versionModels;
 
     }
 
     @Override
     public VersionViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recyclerlist_item_pins, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recyclerlist_item_boards, viewGroup, false);
         VersionViewHolder viewHolder = new VersionViewHolder(view);
-        if (pinList.size() - i < 5) {
-            PinsFragment.loadNext();
+        if (boardList.size() - i < 5) {
+            BoardsFragment.loadNext();
         }
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(VersionViewHolder versionViewHolder, int i) {
+        String boardSubName="";
+        if (boardList.get(i).getPinsCount()>1) boardSubName="pins";
+        else boardSubName="pin";
+        versionViewHolder.title.setText(boardList.get(i).getName());
 
-            versionViewHolder.title.setText(pinList.get(i).getNote());
-            versionViewHolder.subTitle.setText(pinList.get(i).getBoard().getName());
-//        Log.d("Board","name="+pinList.get(i).getBoard().toString());
-            Picasso.with(context).load(pinList.get(i).getImageUrl()).into(versionViewHolder.imageView);
+        versionViewHolder.subTitle.setText(boardList.get(i).getPinsCount() + " " + boardSubName);
+        if(boardList.get(i).getImageUrl()!=null) {
+            versionViewHolder.imageView.setVisibility(View.VISIBLE);
 
-
-
+            Picasso.with(context).load(boardList.get(i).getImageUrl()).into(versionViewHolder.imageView);
+        }
     }
+
 
 
     @Override
     public int getItemCount() {
-            return pinList == null ? 0 : pinList.size();
+        return boardList == null ? 0 : boardList.size();
     }
 
-    public void setPinList(List<PDKPin> pinList) {
-        this.pinList = pinList;
+    public void setBoardList(List<PDKBoard> boardList) {
+        this.boardList = boardList;
     }
-
 
     class VersionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardItemLayout;
@@ -90,7 +90,7 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
             title = (TextView) itemView.findViewById(R.id.listitem_name);
             subTitle = (TextView) itemView.findViewById(R.id.listitem_subname);
 
-                itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
 
 
         }

@@ -1,7 +1,6 @@
 package teamvoy.com.pinbox.fragments;
 
 import android.app.Activity;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,22 +23,20 @@ import teamvoy.com.pinbox.R;
 import teamvoy.com.pinbox.adapters.PinsRecyclerAdapter;
 
 /**
- * Created by lubomyrshershun on 8/31/15.
+ * Created by lubomyrshershun on 9/1/15.
  */
-public class PinsFragment extends Fragment {
+public class InterestsFragment extends Fragment {
     PinsRecyclerAdapter adapter;
     private static PDKCallback myPinsCallback;
     private static PDKResponse myPinsResponse;
     private static boolean _loading = false;
     private SwipeRefreshLayout swipe;
-    private static final String PIN_FIELDS = "id,link,creator,image,counts,note,created_at,board,metadata";
+    private static final String FIELDS = "id,link,creator,image,counts,note,created_at,board,metadata";
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
         swipe=(SwipeRefreshLayout)rootView.findViewById(R.id.swipe);
-       // swipe.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.red_dark));
         swipe.setColorSchemeColors(getResources().getColor(R.color.red_dark));
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.dummyfrag_scrollableview);
 
@@ -66,7 +63,7 @@ public class PinsFragment extends Fragment {
                 myPinsResponse = response;
                 adapter.setPinList(response.getPinList());
                 adapter.notifyDataSetChanged();
-                Log.d("Pin List","size="+response.getPinList().size());
+                Log.d("Pin List", "size=" + response.getPinList().size());
                 if(swipe.isRefreshing()) swipe.setRefreshing(false);
 
             }
@@ -86,19 +83,13 @@ public class PinsFragment extends Fragment {
             }
         });
         _loading = true;
+
         return rootView;
     }
-    public static void loadNext() {
-        if (!_loading && myPinsResponse.hasNext()) {
-            _loading = true;
-            myPinsResponse.loadNext(myPinsCallback);
-        }
-    }
-
     private void fetchPins() {
         adapter.setPinList(null);
         adapter.notifyDataSetChanged();
-        PDKClient.getInstance().getMyPins(PIN_FIELDS,  myPinsCallback);
+        PDKClient.getInstance().getMyLikes(FIELDS, myPinsCallback);
     }
 
     @Override

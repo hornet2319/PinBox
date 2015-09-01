@@ -1,5 +1,7 @@
 package com.pinterest.android.pdk;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,7 +18,7 @@ public class PDKBoard extends PDKModel {
     private String uid;
     private String name;
     private String description;
-    private PDKUser creator;
+    private static PDKUser creator;
     private Date createdAt;
     private Integer pinsCount;
     private Integer collaboratorsCount;
@@ -101,17 +103,19 @@ public class PDKBoard extends PDKModel {
         try {
             if (obj instanceof JSONObject) {
                 JSONObject dataObj = (JSONObject)obj;
+             //   Log.d("json board",dataObj.toString());
                 if (dataObj.has("id")) {
                     board.setUid(dataObj.getString("id"));
                 }
                 if (dataObj.has("name")) {
                     board.setName(dataObj.getString("name"));
+                    Log.d("json board name",dataObj.getString("name"));
                 }
                 if (dataObj.has("description")) {
                     board.setDescription(dataObj.getString("description"));
                 }
                 if (dataObj.has("creator")) {
-                    PDKUser.makeUser(dataObj.getJSONObject("creator"));
+                    creator= PDKUser.makeUser(dataObj.getJSONObject("creator"));
                 }
                 if (dataObj.has("created_at")) {
                     board.createdAt = Utils.getDateFormatter().parse(dataObj.getString("created_at"));

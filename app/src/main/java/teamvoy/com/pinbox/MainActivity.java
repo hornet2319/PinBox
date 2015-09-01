@@ -39,7 +39,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import teamvoy.com.pinbox.adapters.PinsRecyclerAdapter;
+import teamvoy.com.pinbox.fragments.BoardsFragment;
+import teamvoy.com.pinbox.fragments.FollowersFragment;
+import teamvoy.com.pinbox.fragments.InterestsFragment;
 import teamvoy.com.pinbox.fragments.PinsFragment;
+import teamvoy.com.pinbox.fragments.SubscriptionsFragment;
 import teamvoy.com.pinbox.utils.ImageLoaderUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -110,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
         List scopes = new ArrayList<String>();
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
+        scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
+        scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_RELATIONSHIPS);
 
         pdkClient.login(this, scopes, new PDKCallback() {
 
@@ -139,10 +145,10 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new PinsFragment(), "Pins");
-        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_light)), "Boards");
-        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_light)), "Likes");
-        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_dark)), "Subscriptions");
-        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_dark)), "Followers");
+        adapter.addFrag(new BoardsFragment(), "Boards");
+        adapter.addFrag(new InterestsFragment(), "Likes");
+        adapter.addFrag(new SubscriptionsFragment(), "Subscriptions");
+        adapter.addFrag(new FollowersFragment(), "Followers");
         viewPager.setAdapter(adapter);
     }
 
