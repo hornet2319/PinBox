@@ -19,23 +19,31 @@ import teamvoy.com.pinbox.R;
  * This class initialize Image loader with configuration and returns it.
  */
 public class ImageLoaderUtil{
-    private ImageLoader imageLoader;
-    private Context context;
-    DisplayImageOptions options;
+    private static ImageLoader imageLoader;
+    private static Context context;
+    static DisplayImageOptions options;
 
     public ImageLoaderUtil(Context context) {
         this.context=context;
         imageLoader =ImageLoader.getInstance();
     }
+
     public ImageLoader getImageLoader(){
-        init();
+
+        if(!imageLoader.isInited()) init();
+        return imageLoader;
+    }
+    public static ImageLoader getImageLoader(Context con){
+        context=con;
+        imageLoader =ImageLoader.getInstance();
+        if(!imageLoader.isInited()) init();
         return imageLoader;
     }
     public DisplayImageOptions getOptions(){
         return options;
     }
 
-    private void init(){
+    private static void init(){
         File cacheDir = StorageUtils.getOwnCacheDirectory(context, "img");
         // Create configuration for ImageLoader (all options are optional)
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
