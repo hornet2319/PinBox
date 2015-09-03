@@ -1,6 +1,7 @@
 package teamvoy.com.pinbox;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView user_img;
     private TextView user_txt;
     private Context context;
+    private ProgressDialog refreshDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +112,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onLogin(){
+        refreshDialog = ProgressDialog.show(context, null, null);
+
+        // Spin the wheel whilst the dialog exists
+        refreshDialog.setContentView(R.layout.progress_dialog_loader);
+        // Don't exit the dialog when the screen is touched
+        refreshDialog.setCanceledOnTouchOutside(false);
+        // Don't exit the dialog when back is pressed
+        refreshDialog.setCancelable(true);
+
         PDKClient pdkClient=PDKClient.getInstance();
         List scopes = new ArrayList<String>();
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
@@ -137,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(getClass().getName(), exception.getDetailMessage());
             }
         });
+        refreshDialog.dismiss();
     }
     void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

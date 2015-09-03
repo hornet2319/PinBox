@@ -58,7 +58,7 @@ public class SubscriptionsFragment extends Fragment {
         recyclerView.setLayoutManager(staggeredLayoutManager);
         recyclerView.setHasFixedSize(false);
 
-        adapter = new BoardsRecyclerAdapter(getActivity());
+        adapter = new BoardsRecyclerAdapter(getActivity(),false);
         recyclerView.setAdapter(adapter);
         myBoardsCallback = new PDKCallback() {
             @Override

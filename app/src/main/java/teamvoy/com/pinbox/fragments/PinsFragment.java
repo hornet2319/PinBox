@@ -33,14 +33,17 @@ public class PinsFragment extends Fragment {
     private static boolean _loading = false;
     private SwipeRefreshLayout swipe;
     private static final String PIN_FIELDS = "id,link,creator,image,counts,note,created_at,board,metadata";
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         swipe=(SwipeRefreshLayout)rootView.findViewById(R.id.swipe);
        // swipe.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.red_dark));
         swipe.setColorSchemeColors(getResources().getColor(R.color.red_dark));
+        swipe.setRefreshing(true);
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.dummyfrag_scrollableview);
 
 

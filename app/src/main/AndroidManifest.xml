@@ -29,11 +29,13 @@
         </activity>
         <activity
             android:name=".PinActivity"
-            android:label="@string/title_activity_pin"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="teamvoy.com.pinbox.MainActivity" />
+            android:label="@string/title_activity_pin">
+
+
+        </activity>
+        <activity
+            android:name=".BoardActivity"
+            android:label="@string/title_activity_board" >
         </activity>
     </application>
 

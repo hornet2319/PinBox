@@ -1,8 +1,10 @@
 package teamvoy.com.pinbox.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +12,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pinterest.android.pdk.PDKBoard;
+import com.pinterest.android.pdk.PDKCallback;
+import com.pinterest.android.pdk.PDKClient;
+import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKPin;
+import com.pinterest.android.pdk.PDKResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import teamvoy.com.pinbox.BoardActivity;
 import teamvoy.com.pinbox.R;
+import teamvoy.com.pinbox.dialogs.ConfirmationDialog;
+import teamvoy.com.pinbox.fragments.BoardActivityFragment;
 import teamvoy.com.pinbox.fragments.BoardsFragment;
 
 /**
@@ -23,7 +32,7 @@ import teamvoy.com.pinbox.fragments.BoardsFragment;
  */
 public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAdapter.VersionViewHolder> {
     List<PDKBoard> boardList;
-
+    private boolean my;
 
 
     Context context;
@@ -31,8 +40,9 @@ public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAd
 
 
 
-    public BoardsRecyclerAdapter(Context context) {
+    public BoardsRecyclerAdapter(Context context,boolean my) {
         this.context=context;
+        this.my=my;
     }
 
     public BoardsRecyclerAdapter(List<PDKBoard> versionModels) {
@@ -45,7 +55,11 @@ public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAd
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recyclerlist_item_boards, viewGroup, false);
         VersionViewHolder viewHolder = new VersionViewHolder(view);
         if (boardList.size() - i < 5) {
+            if(my)
             BoardsFragment.loadNext();
+           // else
+         //   BoardActivityFragment.loadNext();
+
         }
         return viewHolder;
     }
@@ -76,7 +90,7 @@ public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAd
         this.boardList = boardList;
     }
 
-    class VersionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class VersionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
         CardView cardItemLayout;
         ImageView imageView;
         TextView title;
@@ -91,13 +105,46 @@ public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAd
             subTitle = (TextView) itemView.findViewById(R.id.listitem_subname);
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
 
         }
 
         @Override
         public void onClick(View v) {
-            clickListener.onItemClick(v, getPosition());
+            //clickListener.onItemClick(v, getPosition());
+            Intent intent=new Intent(context, BoardActivity.class);
+            intent.putExtra("id",boardList.get(getPosition()).getUid());
+            intent.putExtra("my", my);
+           // intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            context.startActivity(intent);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+
+            if (my){
+                ConfirmationDialog dialog=new ConfirmationDialog(context);
+                dialog.setTitle("confirm deleting");
+                dialog.setMessage("Do you really want to delete " + boardList.get(getPosition()).getName() + "?");
+                dialog.show();
+                Log.d("Confirmation adapter",""+dialog.isConfirmed());
+                if(dialog.isConfirmed()){
+                    PDKClient.getInstance().deleteBoard(boardList.get(getPosition()).getUid(),new PDKCallback(){
+                        @Override
+                        public void onSuccess(PDKResponse response) {
+                            super.onSuccess(response);
+                            BoardsFragment.update();
+                        }
+
+                        @Override
+                        public void onFailure(PDKException exception) {
+                            super.onFailure(exception);
+                        }
+                    });
+                }
+            }
+            return false;
         }
     }
 

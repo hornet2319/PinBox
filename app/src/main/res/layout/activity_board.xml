@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tabanim_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/dim_foreground_material_dark"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/user_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_pins"
+            android:layout_marginRight="3dp"/>
+            <TextView
+                android:textColor="@color/secondary_text_default_material_light"
+                android:id="@+id/pin_number_txt"
+                android:text="#repins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingRight="10dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true">
+                    <Button
+                        android:id="@+id/board_cancel_subscr_bth"
+                        android:text="unsubscribe"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+
+                        android:background="@drawable/white_custom_button"
+                        android:layout_toLeftOf="@+id/board_edit_bth" />
+                    <Button
+                        android:id="@+id/board_edit_bth"
+                        android:text="edit"
+                        android:visibility="visible"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/white_custom_button"
+                         />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/dim_foreground_material_dark"/>
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
+    android:name="teamvoy.com.pinbox.fragments.BoardActivityFragment"
+    tools:layout="@layout/fragment_main" android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+</LinearLayout>

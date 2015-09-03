@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,8 +46,15 @@ public class PinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pin);
         toolbar=(Toolbar)findViewById(R.id.tabanim_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        getSupportActionBar().setTitle("Back");
         _ID=getIntent().getStringExtra("id");
 
         //Initializing views
