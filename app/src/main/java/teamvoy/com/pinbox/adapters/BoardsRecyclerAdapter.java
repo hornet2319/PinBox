@@ -126,23 +126,9 @@ public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAd
             if (my){
                 ConfirmationDialog dialog=new ConfirmationDialog(context);
                 dialog.setTitle("confirm deleting");
+                dialog.setBoard(boardList.get(getPosition()));
                 dialog.setMessage("Do you really want to delete " + boardList.get(getPosition()).getName() + "?");
                 dialog.show();
-                Log.d("Confirmation adapter",""+dialog.isConfirmed());
-                if(dialog.isConfirmed()){
-                    PDKClient.getInstance().deleteBoard(boardList.get(getPosition()).getUid(),new PDKCallback(){
-                        @Override
-                        public void onSuccess(PDKResponse response) {
-                            super.onSuccess(response);
-                            BoardsFragment.update();
-                        }
-
-                        @Override
-                        public void onFailure(PDKException exception) {
-                            super.onFailure(exception);
-                        }
-                    });
-                }
             }
             return false;
         }

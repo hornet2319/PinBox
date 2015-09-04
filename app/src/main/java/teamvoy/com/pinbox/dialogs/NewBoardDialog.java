@@ -16,6 +16,7 @@ import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
 
 import teamvoy.com.pinbox.R;
+import teamvoy.com.pinbox.fragments.BoardsFragment;
 
 /**
  * Created by lubomyrshershun on 9/3/15.
@@ -44,13 +45,14 @@ public class NewBoardDialog {
                     PDKClient.getInstance().createBoard(name.getText().toString(), null, new PDKCallback() {
                         @Override
                         public void onSuccess(PDKResponse response) {
-                            super.onSuccess(response);
-                            Log.d(getClass().getName(), response.getData().toString());
+                           // super.onSuccess(response);
+                            BoardsFragment.update();
                         }
 
                         @Override
                         public void onFailure(PDKException exception) {
-                            super.onFailure(exception);
+                          //  super.onFailure(exception);
+                            BoardsFragment.update();
                         }
                     });
                 }

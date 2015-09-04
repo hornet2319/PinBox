@@ -39,10 +39,10 @@ public class SubscriptionsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_board, container, false);
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.dummyfrag_scrollableview);
-        TextView text = (TextView) rootView.findViewById(R.id.fragment_txt);
+
         swipe=(SwipeRefreshLayout)rootView.findViewById(R.id.swipe);
         swipe.setColorSchemeColors(getResources().getColor(R.color.red_dark));
-        text.setVisibility(View.GONE);
+
 
 
         StaggeredGridLayoutManager staggeredLayoutManager = new StaggeredGridLayoutManager(2, 1);

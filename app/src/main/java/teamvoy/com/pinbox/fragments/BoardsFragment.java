@@ -2,6 +2,7 @@ package teamvoy.com.pinbox.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +34,7 @@ public class BoardsFragment extends Fragment {
     private static PDKCallback myBoardsCallback;
     private static PDKResponse myBoardsResponse;
     private SwipeRefreshLayout swipe;
+    private FloatingActionButton fab;
     private static boolean _loading = false;
     private static final String BOARD_FIELDS = "id,name,description,creator,image,counts,created_at";
 
@@ -42,17 +44,20 @@ public class BoardsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_board, container, false);
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.dummyfrag_scrollableview);
-        TextView text = (TextView) rootView.findViewById(R.id.fragment_txt);
+
         swipe=(SwipeRefreshLayout)rootView.findViewById(R.id.swipe);
         swipe.setColorSchemeColors(getResources().getColor(R.color.red_dark));
         swipe.setRefreshing(true);
-        text.setOnClickListener(new View.OnClickListener() {
+        fab=(FloatingActionButton)rootView.findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NewBoardDialog createBoard=new NewBoardDialog(getActivity());
                 createBoard.show();
             }
         });
+
 
         StaggeredGridLayoutManager staggeredLayoutManager = new StaggeredGridLayoutManager(2, 1);
         Display display = ((WindowManager) getActivity().getSystemService(Activity.WINDOW_SERVICE))

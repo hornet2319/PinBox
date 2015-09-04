@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -38,6 +39,7 @@ public class PinActivity extends AppCompatActivity {
     private  PDKPin pin;
     ImageView pin_img,pin_author_img,pin_board_img;
     TextView pin_note,pin_time,pin_author_txt,pin_board_txt,pin_number_txt,like_number_txt;
+    private FloatingActionButton fab;
     private Context context;
 
     @Override
@@ -53,7 +55,13 @@ public class PinActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        fab=(FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         getSupportActionBar().setTitle("Back");
         _ID=getIntent().getStringExtra("id");
 
