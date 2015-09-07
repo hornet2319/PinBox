@@ -14,6 +14,7 @@ import com.pinterest.android.pdk.PDKPin;
 import com.pinterest.android.pdk.PDKResponse;
 
 import teamvoy.com.pinbox.fragments.BoardsFragment;
+import teamvoy.com.pinbox.fragments.PinsFragment;
 
 /**
  * Created by lubomyrshershun on 9/3/15.
@@ -39,7 +40,18 @@ public class ConfirmationDialog {
             public void onClick(DialogInterface dialog, int which) {
                // confirmed = true;
                 if (pin != null) {
-                    PDKClient.getInstance().deletePin(pin.getUid(),new PDKCallback());
+                    PDKClient.getInstance().deletePin(pin.getUid(),new PDKCallback(){
+                        @Override
+                        public void onSuccess(PDKResponse response) {
+                            super.onSuccess(response);
+                            PinsFragment.update();
+                        }
+
+                        @Override
+                        public void onFailure(PDKException exception) {
+                            super.onFailure(exception);
+                        }
+                    });
 
                 }
                 else if (board!=null){

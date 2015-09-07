@@ -33,6 +33,7 @@ import java.util.List;
 
 import teamvoy.com.pinbox.PinActivity;
 import teamvoy.com.pinbox.R;
+import teamvoy.com.pinbox.dialogs.ConfirmationDialog;
 import teamvoy.com.pinbox.fragments.PinsFragment;
 import teamvoy.com.pinbox.utils.ImageLoaderUtil;
 import teamvoy.com.pinbox.utils.ImageResizeUtil;
@@ -46,21 +47,20 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
 
     ImageLoaderUtil loaderUtil;
     ImageResizeUtil resizeUtil;
+    boolean my=false;
 
     Context context;
     OnItemClickListener clickListener;
 
 
-    public PinsRecyclerAdapter(Context context) {
+    public PinsRecyclerAdapter(Context context, boolean my) {
         this.context = context;
         loaderUtil = new ImageLoaderUtil(context);
+        this.my=my;
 
     }
 
-    public PinsRecyclerAdapter(List<PDKPin> versionModels) {
-        this.pinList = versionModels;
 
-    }
 
     @Override
     public VersionViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -149,7 +149,7 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
     }
 
 
-    class VersionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class VersionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
         CardView cardItemLayout;
         ImageView imageView;
         TextView title;
@@ -165,6 +165,7 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
             subTitle = (TextView) itemView.findViewById(R.id.listitem_subname);
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
 
         }
@@ -175,6 +176,19 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
             Intent intent=new Intent(context, PinActivity.class);
             intent.putExtra("id",pinList.get(getPosition()).getUid());
             context.startActivity(intent);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (my) {
+                ConfirmationDialog dialog = new ConfirmationDialog(context);
+                dialog.setTitle("confirm deleting");
+                dialog.setPin(pinList.get(getPosition()));
+                dialog.setMessage("Do you really want to delete " + pinList.get(getPosition()).getNote() + "?");
+                dialog.show();
+            }
+            return false;
+
         }
     }
 

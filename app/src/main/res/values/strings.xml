@@ -6,4 +6,5 @@
     <string name="app_id">4759343206768843220</string>
     <string name="title_activity_pin">PinActivity</string>
     <string name="title_activity_board">BoardActivity</string>
+    <string name="title_activity_create_pin">CreatePinActivity</string>
 </resources>

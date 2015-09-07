@@ -15,6 +15,7 @@ import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
 
+import teamvoy.com.pinbox.CreatePinActivity;
 import teamvoy.com.pinbox.R;
 import teamvoy.com.pinbox.fragments.BoardsFragment;
 
@@ -23,10 +24,17 @@ import teamvoy.com.pinbox.fragments.BoardsFragment;
  */
 public class NewBoardDialog {
     private Context context;
+    private boolean bool=false;
 
     public NewBoardDialog(Context context) {
         this.context = context;
     }
+
+    public NewBoardDialog(Context context, boolean b) {
+        this.context = context;
+        bool=true;
+    }
+
     public void show() {
         final AlertDialog.Builder boardDialog = new AlertDialog.Builder(context);
         boardDialog.setTitle("Create board");
@@ -46,13 +54,17 @@ public class NewBoardDialog {
                         @Override
                         public void onSuccess(PDKResponse response) {
                            // super.onSuccess(response);
+                            if (!bool)
                             BoardsFragment.update();
+                            else CreatePinActivity.setBoard(response.getBoard());
                         }
 
                         @Override
                         public void onFailure(PDKException exception) {
                           //  super.onFailure(exception);
+                            if(!bool)
                             BoardsFragment.update();
+                            else Log.e("NewBoardDialog",exception.getDetailMessage());
                         }
                     });
                 }

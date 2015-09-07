@@ -222,51 +222,6 @@ public class MainActivity extends AppCompatActivity {
         PDKClient.getInstance().onOauthResponse(requestCode, resultCode, data);
     }
 
-    public static class DummyFragment extends Fragment {
-        int color;
-        PinsRecyclerAdapter adapter;
 
-        public DummyFragment() {
-        }
-
-        @SuppressLint("ValidFragment")
-        public DummyFragment(int color) {
-            this.color = color;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_main, container, false);
-
-            final FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.dummyfrag_bg);
-            frameLayout.setBackgroundColor(color);
-
-            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dummyfrag_scrollableview);
-
-
-            StaggeredGridLayoutManager staggeredLayoutManager = new StaggeredGridLayoutManager(2,1);
-            Display display = ((WindowManager) getActivity().getSystemService(WINDOW_SERVICE))
-                    .getDefaultDisplay();
-
-            int orientation = display.getRotation();
-
-            if (orientation == Surface.ROTATION_90
-                    || orientation == Surface.ROTATION_270) {
-
-                staggeredLayoutManager = new StaggeredGridLayoutManager(3,1);
-            }
-            recyclerView.setLayoutManager(staggeredLayoutManager);
-            recyclerView.setHasFixedSize(true);
-
-            List<PDKPin> list = new ArrayList<>();
-
-
-            adapter = new PinsRecyclerAdapter(list);
-            recyclerView.setAdapter(adapter);
-
-            return view;
-        }
-
-    }
 
 }

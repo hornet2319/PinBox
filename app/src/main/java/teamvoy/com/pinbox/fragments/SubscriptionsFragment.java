@@ -2,6 +2,7 @@ package teamvoy.com.pinbox.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,7 @@ public class SubscriptionsFragment extends Fragment {
     private static PDKCallback myBoardsCallback;
     private static PDKResponse myBoardsResponse;
     private SwipeRefreshLayout swipe;
+    private boolean subscribed;
     private static boolean _loading = false;
     private static final String BOARD_FIELDS = "id,name,description,creator,image,counts,created_at";
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +44,9 @@ public class SubscriptionsFragment extends Fragment {
 
         swipe=(SwipeRefreshLayout)rootView.findViewById(R.id.swipe);
         swipe.setColorSchemeColors(getResources().getColor(R.color.red_dark));
-
+        subscribed=getActivity().getIntent().getBooleanExtra("subscr",true);
+        FloatingActionButton fab=(FloatingActionButton)rootView.findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
 
 
         StaggeredGridLayoutManager staggeredLayoutManager = new StaggeredGridLayoutManager(2, 1);
@@ -58,7 +62,7 @@ public class SubscriptionsFragment extends Fragment {
         recyclerView.setLayoutManager(staggeredLayoutManager);
         recyclerView.setHasFixedSize(false);
 
-        adapter = new BoardsRecyclerAdapter(getActivity(),false);
+        adapter = new BoardsRecyclerAdapter(getActivity(),false,subscribed);
         recyclerView.setAdapter(adapter);
         myBoardsCallback = new PDKCallback() {
             @Override

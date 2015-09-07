@@ -29,13 +29,15 @@
         </activity>
         <activity
             android:name=".PinActivity"
-            android:label="@string/title_activity_pin">
-
-
+            android:label="@string/title_activity_pin" >
         </activity>
         <activity
             android:name=".BoardActivity"
             android:label="@string/title_activity_board" >
+        </activity>
+        <activity
+            android:name=".CreatePinActivity"
+            android:label="@string/title_activity_create_pin" >
         </activity>
     </application>
 

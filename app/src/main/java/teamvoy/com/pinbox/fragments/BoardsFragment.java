@@ -72,7 +72,7 @@ public class BoardsFragment extends Fragment {
         recyclerView.setLayoutManager(staggeredLayoutManager);
         recyclerView.setHasFixedSize(false);
 
-        adapter = new BoardsRecyclerAdapter(getActivity(),true);
+        adapter = new BoardsRecyclerAdapter(getActivity(),true,true);
         recyclerView.setAdapter(adapter);
         myBoardsCallback = new PDKCallback() {
             @Override

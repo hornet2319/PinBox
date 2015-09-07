@@ -59,9 +59,21 @@
                         android:background="@drawable/white_custom_button"
                         android:layout_toLeftOf="@+id/board_edit_bth" />
                     <Button
+                        android:id="@+id/board_subscr_bth"
+                        android:text="subscribe"
+                        android:visibility="gone"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+
+                        android:background="@drawable/white_custom_button"
+                        android:layout_toLeftOf="@+id/board_edit_bth" />
+                    <Button
                         android:id="@+id/board_edit_bth"
                         android:text="edit"
-                        android:visibility="visible"
+
+                        android:visibility="gone"
                         android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:background="@drawable/white_custom_button"

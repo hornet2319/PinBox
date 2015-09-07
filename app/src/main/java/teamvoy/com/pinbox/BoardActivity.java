@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.pinterest.android.pdk.PDKBoard;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -27,9 +28,10 @@ public class BoardActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private static String _ID;
     private static boolean myBoard;
+    private static boolean subscribed;
     private static Context context;
     private TextView pin_number_txt;
-    private Button cancel_btn,edit_btn;
+    private Button cancel_btn,edit_btn,subscr_btn;
 
 
     @Override
@@ -51,18 +53,22 @@ public class BoardActivity extends AppCompatActivity {
         pin_number_txt=(TextView)findViewById(R.id.pin_number_txt);
         cancel_btn=(Button)findViewById(R.id.board_cancel_subscr_bth);
         edit_btn=(Button)findViewById(R.id.board_edit_bth);
+        subscr_btn=(Button)findViewById(R.id.board_subscr_bth);
         //getting data
         _ID=getIntent().getStringExtra("id");
         BoardActivityFragment.setBoardID(_ID);
         myBoard=getIntent().getBooleanExtra("my", true);
-        Log.d("myBoard",""+myBoard);
-        buttonSwitcher(myBoard);
+       // subscribed=getIntent().getBooleanExtra("subscr",true);
+
+        Log.d("myBoard", "" + myBoard);
+
         PDKClient.getInstance().getBoard(_ID,BOARD_FIELDS,new PDKCallback(){
             @Override
             public void onSuccess(PDKResponse response) {
                 super.onSuccess(response);
                 getSupportActionBar().setTitle(response.getBoard().getName());
-                pin_number_txt.setText(""+response.getBoard().getPinsCount());
+                pin_number_txt.setText("" + response.getBoard().getPinsCount());
+                buttonSwitcher(myBoard, isSubscribed(response.getBoard()));
             }
 
             @Override
@@ -73,7 +79,7 @@ public class BoardActivity extends AppCompatActivity {
 
 
     }
-
+//TODO create buttons listeners;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,14 +102,40 @@ public class BoardActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private void buttonSwitcher(boolean myBoard ){
+    private void buttonSwitcher(boolean myBoard, boolean subscr){
         if(myBoard){
             edit_btn.setVisibility(View.VISIBLE);
             cancel_btn.setVisibility(View.GONE);
+            subscr_btn.setVisibility(View.GONE);
         }
         else {
-            edit_btn.setVisibility(View.GONE);
-            cancel_btn.setVisibility(View.VISIBLE);
+            if(subscr) {
+                edit_btn.setVisibility(View.GONE);
+                cancel_btn.setVisibility(View.GONE);
+                subscr_btn.setVisibility(View.VISIBLE);
+            }
+            else {
+                subscr_btn.setVisibility(View.GONE);
+                edit_btn.setVisibility(View.GONE);
+                cancel_btn.setVisibility(View.VISIBLE);
+            }
         }
+    }
+    private boolean isSubscribed(final PDKBoard board){
+        final boolean[] result = new boolean[1];
+        PDKClient.getInstance().getMyFollowedBoards(BOARD_FIELDS,new PDKCallback(){
+            @Override
+            public void onSuccess(PDKResponse response) {
+                super.onSuccess(response);
+                if(response.getBoardList().contains(board)) result[0] = true;
+                else result[0] = false;
+            }
+
+            @Override
+            public void onFailure(PDKException exception) {
+                super.onFailure(exception);
+            }
+        });
+        return result[0];
     }
 }

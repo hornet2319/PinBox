@@ -33,6 +33,7 @@ import teamvoy.com.pinbox.fragments.BoardsFragment;
 public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAdapter.VersionViewHolder> {
     List<PDKBoard> boardList;
     private boolean my;
+    private boolean subscribed;
 
 
     Context context;
@@ -40,7 +41,7 @@ public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAd
 
 
 
-    public BoardsRecyclerAdapter(Context context,boolean my) {
+    public BoardsRecyclerAdapter(Context context,boolean my, boolean subscribed) {
         this.context=context;
         this.my=my;
     }
@@ -116,6 +117,7 @@ public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAd
             Intent intent=new Intent(context, BoardActivity.class);
             intent.putExtra("id",boardList.get(getPosition()).getUid());
             intent.putExtra("my", my);
+            intent.putExtra("subscr",subscribed);
            // intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             context.startActivity(intent);
         }

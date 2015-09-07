@@ -27,7 +27,7 @@ import teamvoy.com.pinbox.adapters.PinsRecyclerAdapter;
  * Created by lubomyrshershun on 8/31/15.
  */
 public class PinsFragment extends Fragment {
-    PinsRecyclerAdapter adapter;
+    static PinsRecyclerAdapter adapter;
     private static PDKCallback myPinsCallback;
     private static PDKResponse myPinsResponse;
     private static boolean _loading = false;
@@ -60,7 +60,7 @@ public class PinsFragment extends Fragment {
         recyclerView.setLayoutManager(staggeredLayoutManager);
         recyclerView.setHasFixedSize(false);
 
-        adapter = new PinsRecyclerAdapter(getActivity());
+        adapter = new PinsRecyclerAdapter(getActivity(),true);
         recyclerView.setAdapter(adapter);
         myPinsCallback = new PDKCallback() {
             @Override
@@ -98,7 +98,7 @@ public class PinsFragment extends Fragment {
         }
     }
 
-    private void fetchPins() {
+    private static void fetchPins() {
         adapter.setPinList(null);
         adapter.notifyDataSetChanged();
         PDKClient.getInstance().getMyPins(PIN_FIELDS,  myPinsCallback);
@@ -107,6 +107,10 @@ public class PinsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        fetchPins();
+    }
+
+    public static void update() {
         fetchPins();
     }
 }

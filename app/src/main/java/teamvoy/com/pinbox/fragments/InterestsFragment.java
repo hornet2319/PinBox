@@ -54,7 +54,7 @@ public class InterestsFragment extends Fragment {
         recyclerView.setLayoutManager(staggeredLayoutManager);
         recyclerView.setHasFixedSize(false);
 
-        adapter = new PinsRecyclerAdapter(getActivity());
+        adapter = new PinsRecyclerAdapter(getActivity(),false);
         recyclerView.setAdapter(adapter);
         myPinsCallback = new PDKCallback() {
             @Override

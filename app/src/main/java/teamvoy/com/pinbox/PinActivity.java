@@ -1,6 +1,7 @@
 package teamvoy.com.pinbox;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -195,7 +196,9 @@ public class PinActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_pin) {
-            //TODO add PIN IT code here
+            Intent intent=new Intent(context,CreatePinActivity.class);
+            intent.putExtra("id",_ID);
+            startActivity(intent);
             return true;
         }
 
