@@ -62,6 +62,7 @@ public class PinsFragment extends Fragment {
 
         adapter = new PinsRecyclerAdapter(getActivity(),true);
         recyclerView.setAdapter(adapter);
+
         myPinsCallback = new PDKCallback() {
             @Override
             public void onSuccess(PDKResponse response) {

@@ -65,6 +65,7 @@
                android:textSize="@dimen/abc_text_size_caption_material" />
        </RelativeLayout>
        <LinearLayout
+           android:id="@+id/pin_author"
            android:paddingRight="15dp"
            android:paddingLeft="15dp"
            android:layout_width="match_parent"
@@ -86,6 +87,7 @@
                android:textSize="@dimen/abc_text_size_subhead_material" />
        </LinearLayout>
        <LinearLayout
+           android:id="@+id/pin_board"
            android:paddingRight="15dp"
            android:paddingLeft="15dp"
            android:layout_width="match_parent"

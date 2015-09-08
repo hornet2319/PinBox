@@ -58,7 +58,8 @@ public class CreatePinActivity extends AppCompatActivity implements View.OnClick
         confirm_btn.setOnClickListener(this);
         cancel_btn.setOnClickListener(this);
         //set listener for textView
-
+        BoardChooserDialog dialog=new BoardChooserDialog(context);
+        dialog.show();
         pin_board.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,8 +150,11 @@ public class CreatePinActivity extends AppCompatActivity implements View.OnClick
                    savePin();
                 }
                 else {
+
                     isBoardChosen=true;
-                    NewBoardDialog dialog=new NewBoardDialog(context,true);
+                   // BoardChooserDialog dialog=new BoardChooserDialog(context);
+                   // dialog.show();
+                   NewBoardDialog dialog=new NewBoardDialog(context,true);
                     dialog.show();
                 }
 

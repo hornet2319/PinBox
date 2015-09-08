@@ -18,6 +18,8 @@ import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
 
+import java.util.List;
+
 import teamvoy.com.pinbox.fragments.BoardActivityFragment;
 
 
@@ -27,6 +29,7 @@ public class BoardActivity extends AppCompatActivity {
     private static final String PIN_FIELDS = "id,link,creator,image,counts,note,created_at,board,metadata";
     private Toolbar toolbar;
     private static String _ID;
+    private PDKBoard board;
     private static boolean myBoard;
     private static boolean subscribed;
     private static Context context;
@@ -38,6 +41,7 @@ public class BoardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
+
         toolbar=(Toolbar)findViewById(R.id.tabanim_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
@@ -57,7 +61,7 @@ public class BoardActivity extends AppCompatActivity {
         //getting data
         _ID=getIntent().getStringExtra("id");
         BoardActivityFragment.setBoardID(_ID);
-        myBoard=getIntent().getBooleanExtra("my", true);
+        //myBoard=getIntent().getBooleanExtra("my", true);
        // subscribed=getIntent().getBooleanExtra("subscr",true);
 
         Log.d("myBoard", "" + myBoard);
@@ -66,9 +70,10 @@ public class BoardActivity extends AppCompatActivity {
             @Override
             public void onSuccess(PDKResponse response) {
                 super.onSuccess(response);
+                board=response.getBoard();
                 getSupportActionBar().setTitle(response.getBoard().getName());
                 pin_number_txt.setText("" + response.getBoard().getPinsCount());
-                buttonSwitcher(myBoard, isSubscribed(response.getBoard()));
+                isSubscribed(board);
             }
 
             @Override
@@ -76,7 +81,46 @@ public class BoardActivity extends AppCompatActivity {
                 super.onFailure(exception);
             }
         });
+        //listener for toolbar buttons
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //unfollowing board
+              /*  if(board!=null)
+                PDKClient.getInstance().unfollowBoard(board.getUid(),board.getName(),new PDKCallback(){
+                    @Override
+                    public void onSuccess(PDKResponse response) {
+                        super.onSuccess(response);
 
+                    }
+
+                    @Override
+                    public void onFailure(PDKException exception) {
+                        super.onFailure(exception);
+                        Log.e("BoardActivity", exception.getDetailMessage());
+                    }
+                });*/
+            }
+        });
+        subscr_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               /* if(board!=null)
+                    PDKClient.getInstance().followBoard(board.getName(),new PDKCallback(){
+                        @Override
+                        public void onSuccess(PDKResponse response) {
+                            super.onSuccess(response);
+                           // buttonSwitcher(isMyBoard(board),isSubscribed(board));
+                        }
+
+                        @Override
+                        public void onFailure(PDKException exception) {
+                            super.onFailure(exception);
+                            Log.e("BoardActivity",exception.getDetailMessage());
+                        }
+                    });*/
+            }
+        });
 
     }
 //TODO create buttons listeners;
@@ -103,6 +147,7 @@ public class BoardActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void buttonSwitcher(boolean myBoard, boolean subscr){
+        Log.d("BoardActivity", "myBoard="+myBoard+" subscr="+subscr);
         if(myBoard){
             edit_btn.setVisibility(View.VISIBLE);
             cancel_btn.setVisibility(View.GONE);
@@ -121,12 +166,41 @@ public class BoardActivity extends AppCompatActivity {
             }
         }
     }
-    private boolean isSubscribed(final PDKBoard board){
+    private void isMyBoard(final PDKBoard board){
+        final boolean[] result = new boolean[1];
+        PDKClient.getInstance().getMyBoards(BOARD_FIELDS, new PDKCallback() {
+            @Override
+            public void onSuccess(PDKResponse response) {
+                super.onSuccess(response);
+                result[0] = false;
+                Log.d("BoardActivity", "responce size=" + response.getBoardList().size());
+                for (int i = 0; i < response.getBoardList().size(); i++) {
+                    PDKBoard _board = response.getBoardList().get(i);
+                    if (_board.getUid().equals(board.getUid())) result[0] = true;
+                }
+                myBoard = result[0];
+
+                buttonSwitcher(myBoard, subscribed);
+                Log.d("BoardActivity", "result=" + result[0]);
+            }
+
+            @Override
+            public void onFailure(PDKException exception) {
+                super.onFailure(exception);
+                Log.e("BoardActivity",exception.getDetailMessage());
+            }
+        });
+
+      //  return result[0];
+
+    }
+    private void isSubscribed(final PDKBoard board){
         final boolean[] result = new boolean[1];
         PDKClient.getInstance().getMyFollowedBoards(BOARD_FIELDS,new PDKCallback(){
             @Override
             public void onSuccess(PDKResponse response) {
                 super.onSuccess(response);
+
                 if(response.getBoardList().contains(board)) result[0] = true;
                 else result[0] = false;
             }
@@ -136,6 +210,7 @@ public class BoardActivity extends AppCompatActivity {
                 super.onFailure(exception);
             }
         });
-        return result[0];
+        subscribed=result[0];
+        isMyBoard(board);
     }
 }

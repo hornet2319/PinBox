@@ -16,8 +16,8 @@ import java.util.List;
 public class PDKPin extends PDKModel {
 
     private String uid;
-    private static PDKBoard board;
-    private static PDKUser user;
+    private  PDKBoard board;
+    private  PDKUser user;
     private String link;
     private String note;
     private String metadata;
@@ -29,6 +29,7 @@ public class PDKPin extends PDKModel {
 
     public static PDKPin makePin(Object obj) {
         PDKPin pin = new PDKPin();
+
         try {
             if (obj instanceof JSONObject) {
                 JSONObject dataObj = (JSONObject)obj;
@@ -61,10 +62,11 @@ public class PDKPin extends PDKModel {
                     pin.setMetadata(dataObj.getString("metadata"));
                 }
                 if (dataObj.has("creator")) {
-                    user=(PDKUser.makeUser(dataObj.getJSONObject("creator")));
+                    pin.setUser(PDKUser.makeUser(dataObj.getJSONObject("creator")));
                 }
                 if (dataObj.has("board")) {
-                    board= PDKBoard.makeBoard(dataObj.getJSONObject("board"));
+                    pin.setBoard(PDKBoard.makeBoard(dataObj.getJSONObject("board")));
+                 //   Log.d("PDKPIN json","board name="+board.getName());
                 }
                 if (dataObj.has("created_at")) {
                     pin.setCreatedAt(
@@ -109,9 +111,15 @@ public class PDKPin extends PDKModel {
         } catch (JSONException e) {
             Utils.loge("PDK: PDKPinList parse JSON error %s", e.getLocalizedMessage());
         }
+       // logD(pinList);
         return pinList;
     }
-
+    private static void logD(List<PDKPin> list) {
+        for (int i = 0; i < list.size(); i++) {
+            PDKPin pin = list.get(i);
+            Log.d("PDKPIN", "name=" + pin.getNote() + ", BOARD name=" + pin.getBoard().getName());
+        }
+    }
     @Override
     public String getUid() {
         return uid;

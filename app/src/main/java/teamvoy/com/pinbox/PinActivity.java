@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pinterest.android.pdk.PDKCallback;
@@ -78,6 +79,25 @@ public class PinActivity extends AppCompatActivity {
         pin_time=(TextView)findViewById(R.id.pin_time);
         pin_number_txt=(TextView)findViewById(R.id.pin_number_txt);
         like_number_txt=(TextView)findViewById(R.id.like_number_txt);
+
+        LinearLayout author=(LinearLayout)findViewById(R.id.pin_author);
+        LinearLayout board=(LinearLayout)findViewById(R.id.pin_board);
+        author.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Todo place UserActivity invocation here;
+            }
+        });
+        board.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pin != null) {
+                    Intent intent=new Intent(context,BoardActivity.class);
+                    intent.putExtra("id", pin.getBoard().getUid());
+                    startActivity(intent);
+                }
+            }
+        });
 
         PDKClient.getInstance().getPin(_ID, PIN_FIELDS, new PDKCallback() {
 

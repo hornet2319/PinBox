@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView user_img;
     private TextView user_txt;
     private Context context;
+    private PDKUser user;
     private ProgressDialog refreshDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,43 +73,9 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(viewPager);
 
 
-        user_txt=(TextView)findViewById(R.id.user_textview);
-
-      //  TabLayout tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
-      //  tabLayout.setupWithViewPager(viewPager);
-
+        //user_txt=(TextView)findViewById(R.id.user_textview);
         onLogin();
-     /*   tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
 
-                viewPager.setCurrentItem(tab.getPosition());
-
-                switch (tab.getPosition()) {
-                    case 0:
-                        showToast("One");
-                        break;
-                    case 1:
-                        showToast("Two");
-
-                        break;
-                    case 2:
-                        showToast("Three");
-
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        }); */
     }
 
     public void onLogin(){
@@ -134,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(PDKResponse response) {
                 Log.d(getClass().getName(), response.getData().toString());
                 //user logged in, use response.getUser() to get PDKUser object
-                PDKUser user = response.getUser();
+                // user= response.getUser();
                 //  Picasso.with(context).load(user.getImageUrl()).into(user_img);
-                user_txt.setText(user.getFirstName() + " " + user.getLastName());
+               // user_txt.setText(user.getFirstName() + " " + user.getLastName());
 
 
 
@@ -182,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_logout: {
                 PDKClient.getInstance().logout();
                 finish();
+
+            }
+            case R.id.action_user:{
+                Intent intent=new Intent(context,UserActivity.class);
+                startActivity(intent);
             }
 
         }

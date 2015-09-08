@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,7 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
 
         versionViewHolder.title.setText(pinList.get(i).getNote());
         versionViewHolder.subTitle.setText(pinList.get(i).getBoard().getName());
-//        Log.d("Board","name="+pinList.get(i).getBoard().toString());
+      //  Log.d("Board", "name=" + pinList.get(i).getBoard().getName());
 
         resizeUtil.setView(versionViewHolder.imageView);
         resizeUtil.setImage(pinList.get(i).getImageUrl());
@@ -138,7 +139,12 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
             }
         });
     }
-
+    private void logD(List<PDKPin> list){
+        for(int i=0;i<list.size();i++){
+            PDKPin pin=list.get(i);
+            Log.d("PIN adapter","name="+pin.getNote()+", BOARD name="+pin.getBoard().getName());
+        }
+    }
     @Override
     public int getItemCount() {
         return pinList == null ? 0 : pinList.size();
@@ -146,6 +152,9 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
 
     public void setPinList(List<PDKPin> pinList) {
         this.pinList = pinList;
+        if(pinList!=null)
+       // logD(pinList);
+        ;
     }
 
 
@@ -184,7 +193,7 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
                 ConfirmationDialog dialog = new ConfirmationDialog(context);
                 dialog.setTitle("confirm deleting");
                 dialog.setPin(pinList.get(getPosition()));
-                dialog.setMessage("Do you really want to delete " + pinList.get(getPosition()).getNote() + "?");
+                dialog.setMessage("Do you really want to delete \"" + pinList.get(getPosition()).getNote() + "\"?");
                 dialog.show();
             }
             return false;

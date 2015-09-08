@@ -239,6 +239,15 @@ public class PDKClient {
         String url = PROD_BASE_API_URL + path;
         deleteRequest(url, null, callback);
     }
+    public void deletePath(String path,HashMap<String, String> params, PDKCallback callback) {
+        if (Utils.isEmpty(path)) {
+            if (callback != null) callback.onFailure(new PDKException("Invalid path"));
+            return;
+        }
+        if (callback != null) callback.setPath(path);
+        String url = PROD_BASE_API_URL + path;
+        deleteRequest(url, params, callback);
+    }
 
     public void putPath(String path, HashMap<String, String> params, PDKCallback callback) {
         if (Utils.isEmpty(path)) {
@@ -342,8 +351,26 @@ public class PDKClient {
         }
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("name", name);
-        if (Utils.isEmpty(desc)) params.put("description", desc);
+        if (!Utils.isEmpty(desc)) params.put("description", desc);
         postPath(BOARDS, params, callback);
+    }
+    public void followBoard(String board, PDKCallback callback){
+        if (Utils.isEmpty(board)) {
+            if (callback != null) callback.onFailure(new PDKException("Board cannot be empty"));
+            return;
+        }
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("board", board);
+        postPath(ME+FOLLOWING+BOARDS, params, callback);
+    }
+    public void unfollowBoard(String id, String board, PDKCallback callback){
+        if (Utils.isEmpty(id)) {
+            if (callback != null) callback.onFailure(new PDKException("ID cannot be empty"));
+            return;
+        }
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("board", board);
+        deletePath(ME+FOLLOWING+BOARDS+id,params,callback);
     }
 
     //Pin Endpoints

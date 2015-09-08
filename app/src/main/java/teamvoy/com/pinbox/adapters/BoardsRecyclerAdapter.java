@@ -129,7 +129,7 @@ public class BoardsRecyclerAdapter extends RecyclerView.Adapter<BoardsRecyclerAd
                 ConfirmationDialog dialog=new ConfirmationDialog(context);
                 dialog.setTitle("confirm deleting");
                 dialog.setBoard(boardList.get(getPosition()));
-                dialog.setMessage("Do you really want to delete " + boardList.get(getPosition()).getName() + "?");
+                dialog.setMessage("Do you really want to delete \"" + boardList.get(getPosition()).getName() + "\"?");
                 dialog.show();
             }
             return false;

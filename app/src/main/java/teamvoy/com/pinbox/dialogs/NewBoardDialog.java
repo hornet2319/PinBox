@@ -47,7 +47,7 @@ public class NewBoardDialog {
         boardDialog.setView(view);
         boardDialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(final DialogInterface dialog, int which) {
                 //TODO descrpiption is not aivailable for now
                 if (!name.getText().toString().isEmpty()) {
                     PDKClient.getInstance().createBoard(name.getText().toString(), null, new PDKCallback() {
@@ -57,6 +57,7 @@ public class NewBoardDialog {
                             if (!bool)
                             BoardsFragment.update();
                             else CreatePinActivity.setBoard(response.getBoard());
+
                         }
 
                         @Override
@@ -69,6 +70,7 @@ public class NewBoardDialog {
                     });
                 }
                 else Toast.makeText(context,"board name cannot be empty",Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
       /*  boardDialog.setNeutralButton("More options", new DialogInterface.OnClickListener() {

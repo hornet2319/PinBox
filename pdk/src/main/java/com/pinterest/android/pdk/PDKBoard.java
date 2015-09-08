@@ -115,7 +115,7 @@ public class PDKBoard extends PDKModel {
                     board.setDescription(dataObj.getString("description"));
                 }
                 if (dataObj.has("creator")) {
-                    creator= PDKUser.makeUser(dataObj.getJSONObject("creator"));
+                    board.setCreator(PDKUser.makeUser(dataObj.getJSONObject("creator")));
                 }
                 if (dataObj.has("created_at")) {
                     board.createdAt = Utils.getDateFormatter().parse(dataObj.getString("created_at"));

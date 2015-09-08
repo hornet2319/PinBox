@@ -7,4 +7,6 @@
     <string name="title_activity_pin">PinActivity</string>
     <string name="title_activity_board">BoardActivity</string>
     <string name="title_activity_create_pin">CreatePinActivity</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="title_activity_test">TestActivity</string>
 </resources>
