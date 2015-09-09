@@ -19,6 +19,7 @@ import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
 
+import teamvoy.com.pinbox.BoardActivity;
 import teamvoy.com.pinbox.R;
 import teamvoy.com.pinbox.adapters.PinsRecyclerAdapter;
 
@@ -26,7 +27,7 @@ import teamvoy.com.pinbox.adapters.PinsRecyclerAdapter;
  * A placeholder fragment containing a simple view.
  */
 public class BoardActivityFragment extends Fragment {
-    PinsRecyclerAdapter adapter;
+    static PinsRecyclerAdapter adapter;
     private static PDKCallback myPinsCallback;
     private static PDKResponse myPinsResponse;
     private static boolean _loading = false;
@@ -63,7 +64,7 @@ public class BoardActivityFragment extends Fragment {
         recyclerView.setLayoutManager(staggeredLayoutManager);
         recyclerView.setHasFixedSize(false);
 
-        adapter = new PinsRecyclerAdapter(getActivity(),false);
+        adapter = new PinsRecyclerAdapter(getActivity(),BoardActivity.myBoard);
         recyclerView.setAdapter(adapter);
         myPinsCallback = new PDKCallback() {
             @Override
@@ -72,7 +73,6 @@ public class BoardActivityFragment extends Fragment {
                 myPinsResponse = response;
                 adapter.setPinList(response.getPinList());
                 adapter.notifyDataSetChanged();
-                Log.d("Pin List", "size=" + response.getPinList().size());
                 if(swipe.isRefreshing()) swipe.setRefreshing(false);
 
             }
@@ -101,7 +101,7 @@ public class BoardActivityFragment extends Fragment {
         }
     }
 
-    private void fetchPins() {
+    private static void fetchPins() {
         adapter.setPinList(null);
         adapter.notifyDataSetChanged();
         PDKClient.getInstance().getBoardPins(boardID,PIN_FIELDS, myPinsCallback);
@@ -110,6 +110,9 @@ public class BoardActivityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        fetchPins();
+    }
+    public static void update() {
         fetchPins();
     }
 }

@@ -150,7 +150,7 @@ public class PDKUser extends PDKModel {
             if (obj instanceof JSONObject) {
 
                 JSONObject dataObj = (JSONObject)obj;
-                Log.d("json user", dataObj.toString());
+
                 if (dataObj.has("id")) {
                     user.setUid(dataObj.getString("id"));
                 }
@@ -172,7 +172,6 @@ public class PDKUser extends PDKModel {
                 }
                 if (dataObj.has("counts")) {
                     JSONObject countsObj = dataObj.getJSONObject("counts");
-                    Log.d("json counts",countsObj.toString());
                     if (countsObj.has("pins")) {
                         user.setPinCount(countsObj.getInt("pins"));
 

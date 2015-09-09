@@ -39,7 +39,6 @@ import com.pinterest.android.pdk.PDKUser;
 import java.util.ArrayList;
 import java.util.List;
 
-import teamvoy.com.pinbox.adapters.PinsRecyclerAdapter;
 import teamvoy.com.pinbox.fragments.BoardsFragment;
 import teamvoy.com.pinbox.fragments.FollowersFragment;
 import teamvoy.com.pinbox.fragments.InterestsFragment;
@@ -99,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(PDKResponse response) {
-                Log.d(getClass().getName(), response.getData().toString());
                 //user logged in, use response.getUser() to get PDKUser object
                 // user= response.getUser();
                 //  Picasso.with(context).load(user.getImageUrl()).into(user_img);

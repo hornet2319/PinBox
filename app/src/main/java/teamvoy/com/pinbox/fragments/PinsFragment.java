@@ -70,7 +70,6 @@ public class PinsFragment extends Fragment {
                 myPinsResponse = response;
                 adapter.setPinList(response.getPinList());
                 adapter.notifyDataSetChanged();
-                Log.d("Pin List","size="+response.getPinList().size());
                 if(swipe.isRefreshing()) swipe.setRefreshing(false);
 
             }

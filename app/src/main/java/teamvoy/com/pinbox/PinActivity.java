@@ -108,11 +108,9 @@ public class PinActivity extends AppCompatActivity {
                         pin_number_txt.setText("" + response.getPin().getRepinCount());
                         like_number_txt.setText("" + response.getPin().getLikeCount());
                         user_id = response.getPin().getUser().getUid();
-                        Log.d("User ID", user_id);
                         PDKClient.getInstance().getUser(user_id, USER_FIELDS, new PDKCallback() {
                             @Override
                             public void onSuccess(PDKResponse response) {
-                                Log.d("user name", response.getUser().getUsername());
                                 Picasso.with(context).load(response.getUser().getImageUrl()).into(pin_author_img);
                                 pin_author_txt.setText(response.getUser().getUsername());
                             }
@@ -125,11 +123,9 @@ public class PinActivity extends AppCompatActivity {
                         });
 
                         board_id = response.getPin().getBoard().getUid();
-                        Log.d("Board ID", board_id);
                         PDKClient.getInstance().getBoard(board_id, BOARD_FIELDS, new PDKCallback() {
                             @Override
                             public void onSuccess(PDKResponse response) {
-                                Log.d("board name", response.getBoard().getName());
                                 Picasso.with(context).load(response.getBoard().getImageUrl()).into(pin_board_img);
                                 pin_board_txt.setText(response.getBoard().getName());
                             }
@@ -141,7 +137,6 @@ public class PinActivity extends AppCompatActivity {
                             }
                         });
                         board_id = response.getPin().getBoard().getUid();
-                        Log.d("Board ID", board_id);
                         Picasso.with(context).load(pin.getImageUrl()).into(new Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {

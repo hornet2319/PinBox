@@ -109,7 +109,6 @@ public class PDKBoard extends PDKModel {
                 }
                 if (dataObj.has("name")) {
                     board.setName(dataObj.getString("name"));
-                    Log.d("json board name",dataObj.getString("name"));
                 }
                 if (dataObj.has("description")) {
                     board.setDescription(dataObj.getString("description"));

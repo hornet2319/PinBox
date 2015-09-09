@@ -143,7 +143,6 @@ public class BoardChooserDialog {
             PDKClient.getInstance().getMyBoards(BOARD_FIELDS, new PDKCallback() {
                 @Override
                 public void onSuccess(PDKResponse response) {
-                    Log.d("BoardCooserDialog","responce size="+response.getBoardList().size());
                     super.onSuccess(response);
                     boardList.clear();
                     boardList.addAll(response.getBoardList());
@@ -167,7 +166,6 @@ public class BoardChooserDialog {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Log.d("BoardChooserDialog", "Atask finished, content size=" + content.size() + ",boardList size=" + boardList.size());
             super.onPostExecute(aVoid);
 
             if (content != null) {

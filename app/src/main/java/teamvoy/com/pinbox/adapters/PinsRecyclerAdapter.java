@@ -35,6 +35,7 @@ import java.util.List;
 import teamvoy.com.pinbox.PinActivity;
 import teamvoy.com.pinbox.R;
 import teamvoy.com.pinbox.dialogs.ConfirmationDialog;
+import teamvoy.com.pinbox.fragments.BoardActivityFragment;
 import teamvoy.com.pinbox.fragments.PinsFragment;
 import teamvoy.com.pinbox.utils.ImageLoaderUtil;
 import teamvoy.com.pinbox.utils.ImageResizeUtil;
@@ -48,7 +49,7 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
 
     ImageLoaderUtil loaderUtil;
     ImageResizeUtil resizeUtil;
-    boolean my=false;
+    boolean my=true;
 
     Context context;
     OnItemClickListener clickListener;
@@ -69,9 +70,7 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
         VersionViewHolder viewHolder = new VersionViewHolder(view);
         resizeUtil = new ImageResizeUtil(context);
 
-        if (pinList.size() - i < 5) {
-            PinsFragment.loadNext();
-        }
+
         return viewHolder;
     }
 
@@ -109,7 +108,11 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
 
             }
         });
-*/
+*/          if (pinList.size() - i < 5) {
+            Log.d("my", ""+my);
+           // if(my) {PinsFragment.loadNext();}
+           // else {BoardActivityFragment.loadNext();}
+        }
     Picasso.with(context).load(pinList.get(i).getImageUrl()).into(versionViewHolder.imageView);
     }
     void loadImage(int i, final VersionViewHolder versionViewHolder){
@@ -142,7 +145,6 @@ public class PinsRecyclerAdapter extends RecyclerView.Adapter<PinsRecyclerAdapte
     private void logD(List<PDKPin> list){
         for(int i=0;i<list.size();i++){
             PDKPin pin=list.get(i);
-            Log.d("PIN adapter","name="+pin.getNote()+", BOARD name="+pin.getBoard().getName());
         }
     }
     @Override

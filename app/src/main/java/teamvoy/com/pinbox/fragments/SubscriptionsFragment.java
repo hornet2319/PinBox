@@ -71,7 +71,6 @@ public class SubscriptionsFragment extends Fragment {
                 myBoardsResponse = response;
                 adapter.setBoardList(response.getBoardList());
                 adapter.notifyDataSetChanged();
-                Log.d("Boards List", "size=" + response.getPinList().size());
                 if(swipe.isRefreshing()) swipe.setRefreshing(false);
 
             }

@@ -66,7 +66,6 @@ public class FollowersFragment extends Fragment {
                 myPinsResponse = response;
                 adapter.setUsersList(response.getUserList());
                 adapter.notifyDataSetChanged();
-                Log.d("Pin List", "size=" + response.getPinList().size());
                 if(swipe.isRefreshing()) swipe.setRefreshing(false);
 
             }

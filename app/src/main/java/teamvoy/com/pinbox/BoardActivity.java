@@ -30,7 +30,7 @@ public class BoardActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private static String _ID;
     private PDKBoard board;
-    private static boolean myBoard;
+    public static boolean myBoard;
     private static boolean subscribed;
     private static Context context;
     private TextView pin_number_txt;
@@ -63,9 +63,6 @@ public class BoardActivity extends AppCompatActivity {
         BoardActivityFragment.setBoardID(_ID);
         //myBoard=getIntent().getBooleanExtra("my", true);
        // subscribed=getIntent().getBooleanExtra("subscr",true);
-
-        Log.d("myBoard", "" + myBoard);
-
         PDKClient.getInstance().getBoard(_ID,BOARD_FIELDS,new PDKCallback(){
             @Override
             public void onSuccess(PDKResponse response) {
@@ -147,7 +144,7 @@ public class BoardActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void buttonSwitcher(boolean myBoard, boolean subscr){
-        Log.d("BoardActivity", "myBoard="+myBoard+" subscr="+subscr);
+
         if(myBoard){
             edit_btn.setVisibility(View.VISIBLE);
             cancel_btn.setVisibility(View.GONE);
@@ -173,7 +170,7 @@ public class BoardActivity extends AppCompatActivity {
             public void onSuccess(PDKResponse response) {
                 super.onSuccess(response);
                 result[0] = false;
-                Log.d("BoardActivity", "responce size=" + response.getBoardList().size());
+
                 for (int i = 0; i < response.getBoardList().size(); i++) {
                     PDKBoard _board = response.getBoardList().get(i);
                     if (_board.getUid().equals(board.getUid())) result[0] = true;
@@ -181,7 +178,7 @@ public class BoardActivity extends AppCompatActivity {
                 myBoard = result[0];
 
                 buttonSwitcher(myBoard, subscribed);
-                Log.d("BoardActivity", "result=" + result[0]);
+
             }
 
             @Override
