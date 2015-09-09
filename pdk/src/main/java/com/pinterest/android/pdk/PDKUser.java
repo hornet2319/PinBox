@@ -1,5 +1,7 @@
 package com.pinterest.android.pdk;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -148,6 +150,7 @@ public class PDKUser extends PDKModel {
             if (obj instanceof JSONObject) {
 
                 JSONObject dataObj = (JSONObject)obj;
+                Log.d("json user", dataObj.toString());
                 if (dataObj.has("id")) {
                     user.setUid(dataObj.getString("id"));
                 }
@@ -169,8 +172,10 @@ public class PDKUser extends PDKModel {
                 }
                 if (dataObj.has("counts")) {
                     JSONObject countsObj = dataObj.getJSONObject("counts");
+                    Log.d("json counts",countsObj.toString());
                     if (countsObj.has("pins")) {
-                        user.setLikesCount(countsObj.getInt("pins"));
+                        user.setPinCount(countsObj.getInt("pins"));
+
                     }
                     if (countsObj.has("following")) {
                         user.setFollowingCount(countsObj.getInt("following"));
