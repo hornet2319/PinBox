@@ -46,6 +46,7 @@
                 android:layout_gravity="center_vertical"/>
         </LinearLayout>
 
+
         <TextView
             android:id="@+id/user_username"
             android:layout_below="@+id/linear1"
