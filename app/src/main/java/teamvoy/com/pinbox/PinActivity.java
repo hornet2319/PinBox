@@ -27,6 +27,8 @@ import com.pinterest.android.pdk.PDKResponse;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.util.List;
+
 import teamvoy.com.pinbox.utils.ImageLoaderUtil;
 
 
@@ -39,7 +41,8 @@ public class PinActivity extends AppCompatActivity {
     private static String user_id;
     private static String board_id;
     private  PDKPin pin;
-    ImageView pin_img,pin_author_img,pin_board_img;
+    private boolean liked=true;
+    ImageView pin_img,pin_author_img,pin_board_img,like_number_img;
     TextView pin_note,pin_time,pin_author_txt,pin_board_txt,pin_number_txt,like_number_txt;
     private FloatingActionButton fab;
     private Context context;
@@ -61,7 +64,7 @@ public class PinActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (!liked) like(true);
             }
         });
         getSupportActionBar().setTitle("Back");
@@ -69,6 +72,7 @@ public class PinActivity extends AppCompatActivity {
 
         //Initializing views
         context=this;
+        like_number_img=(ImageView)findViewById(R.id.like_number_img);
         pin_img=(ImageView)findViewById(R.id.pin_img);
         pin_author_img=(ImageView)findViewById(R.id.pin_author_img);
         pin_board_img=(ImageView)findViewById(R.id.pin_board_img);
@@ -98,7 +102,12 @@ public class PinActivity extends AppCompatActivity {
                 }
             }
         });
-
+        like_number_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fab.getVisibility()==View.GONE) dislike(true);
+            }
+        });
         PDKClient.getInstance().getPin(_ID, PIN_FIELDS, new PDKCallback() {
 
                     @Override
@@ -107,6 +116,7 @@ public class PinActivity extends AppCompatActivity {
                         pin_note.setText(response.getPin().getNote());
                         pin_number_txt.setText("" + response.getPin().getRepinCount());
                         like_number_txt.setText("" + response.getPin().getLikeCount());
+                        isLiked();
                         user_id = response.getPin().getUser().getUid();
                         PDKClient.getInstance().getUser(user_id, USER_FIELDS, new PDKCallback() {
                             @Override
@@ -193,7 +203,39 @@ public class PinActivity extends AppCompatActivity {
         //ImageLoaderUtil.getImageLoader(context).displayImage(pin.getUser().getImageUrl(), pin_author_img);
         //ImageLoaderUtil.getImageLoader(context).displayImage(pin.getBoard().getImageUrl(),pin_board_img);
 
+    }
+    private void dislike(boolean decr){
+        liked=false;
+        like_number_img.setImageResource(R.drawable.ic_like);
+        if(decr) like_number_txt.setText(Integer.parseInt(like_number_txt.getText().toString())-1+"");
+        fab.setVisibility(View.VISIBLE);
+    }
+    private void like(boolean incr){
+        liked=true;
+        like_number_img.setImageResource(R.drawable.ic_like_red);
+        if (incr) like_number_txt.setText(Integer.parseInt(like_number_txt.getText().toString()) + 1 + "");
+        fab.setVisibility(View.GONE);
+    }
+    private void isLiked(){
+        PDKClient.getInstance().getMyLikes(PIN_FIELDS,new PDKCallback(){
+            @Override
+            public void onSuccess(PDKResponse response) {
+                super.onSuccess(response);
+                List<PDKPin> list=response.getPinList();
+                for (int i=0;i<list.size();i++){
+                    if (list.get(i).getUid().equals(pin.getUid())){
+                        like(false);
+                        break;
+                    }
+                    else dislike(false);
+                }
+            }
 
+            @Override
+            public void onFailure(PDKException exception) {
+                super.onFailure(exception);
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

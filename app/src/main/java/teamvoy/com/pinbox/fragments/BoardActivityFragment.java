@@ -73,7 +73,7 @@ public class BoardActivityFragment extends Fragment {
         }
         recyclerView.setLayoutManager(staggeredLayoutManager);
         recyclerView.setHasFixedSize(false);
-//checking if last element reached
+        //checking if last element reached
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int totalItemCount;
             @Override
@@ -88,8 +88,9 @@ public class BoardActivityFragment extends Fragment {
                 totalItemCount = staggeredLayoutManager.getItemCount();
                 int[] lastVisibleItemsPosition=new int[staggeredLayoutManager.getSpanCount()];
                 staggeredLayoutManager.findLastCompletelyVisibleItemPositions(lastVisibleItemsPosition);
-                if (_loading) {
+
                     for (int i=0;i<lastVisibleItemsPosition.length;i++){
+                        if (_loading) {
                         if (  lastVisibleItemsPosition[i]== totalItemCount-1) {
                             _loading = false;
                             loadNext();
