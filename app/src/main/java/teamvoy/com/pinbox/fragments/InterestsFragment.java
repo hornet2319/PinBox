@@ -74,7 +74,7 @@ public class InterestsFragment extends Fragment {
 
                 totalItemCount = staggeredLayoutManager.getItemCount();
                 int[] lastVisibleItemsPosition = new int[staggeredLayoutManager.getSpanCount()];
-                staggeredLayoutManager.findLastCompletelyVisibleItemPositions(lastVisibleItemsPosition);
+                staggeredLayoutManager.findLastVisibleItemPositions(lastVisibleItemsPosition);
                 if (_loading) {
                     for (int i = 0; i < lastVisibleItemsPosition.length; i++) {
                         if (lastVisibleItemsPosition[i] == totalItemCount - 1) {

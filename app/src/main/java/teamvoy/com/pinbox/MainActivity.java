@@ -57,66 +57,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        img_util = new ImageLoaderUtil(context);
+        context=this;
         final Toolbar toolbar = (Toolbar) findViewById(R.id.tabanim_toolbar);
         setSupportActionBar(toolbar);
-        context=this;
-        //initialize pdk
-        PDKClient.configureInstance(this, getString(R.string.app_id));
-        PDKClient.getInstance().onConnect(this);
+
+
         PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_title_strip);
 
         pagerTabStrip.setDrawFullUnderline(false);
         pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.red_dark));
         final ViewPager viewPager = (ViewPager) findViewById(R.id.tabanim_viewpager);
+
         setupViewPager(viewPager);
 
 
-        //user_txt=(TextView)findViewById(R.id.user_textview);
-        onLogin();
-
-    }
-
-    public void onLogin(){
-        refreshDialog = ProgressDialog.show(context, null, null);
-
-        // Spin the wheel whilst the dialog exists
-        refreshDialog.setContentView(R.layout.progress_dialog_loader);
-        // Don't exit the dialog when the screen is touched
-        refreshDialog.setCanceledOnTouchOutside(false);
-        // Don't exit the dialog when back is pressed
-        refreshDialog.setCancelable(true);
-
-        PDKClient pdkClient=PDKClient.getInstance();
-        List scopes = new ArrayList<String>();
-        scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
-        scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
-        scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
-        scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_RELATIONSHIPS);
-
-        pdkClient.login(this, scopes, new PDKCallback() {
-
-            @Override
-            public void onSuccess(PDKResponse response) {
-                //user logged in, use response.getUser() to get PDKUser object
-                // user= response.getUser();
-                //  Picasso.with(context).load(user.getImageUrl()).into(user_img);
-               // user_txt.setText(user.getFirstName() + " " + user.getLastName());
-
-
-
-
-            }
-
-            @Override
-            public void onFailure(PDKException exception) {
-                Log.e(getClass().getName(), exception.getDetailMessage());
-            }
-        });
-        refreshDialog.dismiss();
-    }
-    void showToast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -186,11 +140,7 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        PDKClient.getInstance().onOauthResponse(requestCode, resultCode, data);
-    }
+
 
 
 

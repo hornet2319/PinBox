@@ -87,10 +87,13 @@ public class BoardActivityFragment extends Fragment {
 
                 totalItemCount = staggeredLayoutManager.getItemCount();
                 int[] lastVisibleItemsPosition=new int[staggeredLayoutManager.getSpanCount()];
-                staggeredLayoutManager.findLastCompletelyVisibleItemPositions(lastVisibleItemsPosition);
+                Log.d("BoardActivity", "span count="+staggeredLayoutManager.getSpanCount());
+                staggeredLayoutManager.findLastVisibleItemPositions(lastVisibleItemsPosition);
 
                     for (int i=0;i<lastVisibleItemsPosition.length;i++){
                         if (_loading) {
+                            Log.d("BoardActivity", "span="+i+" lastitem "+lastVisibleItemsPosition[i]);
+                            Log.d("BoardActivity", "total "+totalItemCount);
                         if (  lastVisibleItemsPosition[i]== totalItemCount-1) {
                             _loading = false;
                             loadNext();

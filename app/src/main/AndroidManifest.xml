@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +26,10 @@
 
                 <data android:scheme="pdk4759343206768843220" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".PinActivity"
@@ -47,6 +51,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="teamvoy.com.pinbox.MainActivity" />
         </activity>
+
+
     </application>
 
 </manifest>
