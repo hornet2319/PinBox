@@ -17,7 +17,11 @@ import android.view.WindowManager;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
+import com.pinterest.android.pdk.PDKPin;
 import com.pinterest.android.pdk.PDKResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import teamvoy.com.pinbox.BoardActivity;
 import teamvoy.com.pinbox.R;
@@ -30,10 +34,15 @@ public class BoardActivityFragment extends Fragment {
     static PinsRecyclerAdapter adapter;
     private static PDKCallback myPinsCallback;
     private static PDKResponse myPinsResponse;
-    private static boolean _loading = false;
+    private static boolean _loading = true;
     private SwipeRefreshLayout swipe;
     private static final String PIN_FIELDS = "id,link,creator,image,counts,note,created_at,board,metadata";
     private static String boardID;
+    private List<PDKPin> data;
+    private StaggeredGridLayoutManager staggeredLayoutManager;
+    private boolean loading = true;
+    int totalItemCount;
+
     public BoardActivityFragment() {
     }
     public static void setBoardID(String ID){
@@ -42,7 +51,7 @@ public class BoardActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        data=new ArrayList<>();
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         swipe=(SwipeRefreshLayout)rootView.findViewById(R.id.swipe);
@@ -51,7 +60,8 @@ public class BoardActivityFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.dummyfrag_scrollableview);
 
 
-        StaggeredGridLayoutManager staggeredLayoutManager = new StaggeredGridLayoutManager(2,1);
+
+         staggeredLayoutManager = new StaggeredGridLayoutManager(2,1);
         Display display = ((WindowManager) getActivity().getSystemService(Activity.WINDOW_SERVICE))
                 .getDefaultDisplay();
 
@@ -63,23 +73,50 @@ public class BoardActivityFragment extends Fragment {
         }
         recyclerView.setLayoutManager(staggeredLayoutManager);
         recyclerView.setHasFixedSize(false);
+//checking if last element reached
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            int totalItemCount;
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                totalItemCount = staggeredLayoutManager.getItemCount();
+                int[] lastVisibleItemsPosition=new int[staggeredLayoutManager.getSpanCount()];
+                staggeredLayoutManager.findLastCompletelyVisibleItemPositions(lastVisibleItemsPosition);
+                if (_loading) {
+                    for (int i=0;i<lastVisibleItemsPosition.length;i++){
+                        if (  lastVisibleItemsPosition[i]== totalItemCount-1) {
+                            _loading = false;
+                            loadNext();
+                        }
+                    }
+
+                }
+            }
+        });
 
         adapter = new PinsRecyclerAdapter(getActivity(),BoardActivity.myBoard);
         recyclerView.setAdapter(adapter);
         myPinsCallback = new PDKCallback() {
             @Override
             public void onSuccess(PDKResponse response) {
-                _loading = false;
+
+                data.addAll(response.getPinList());
                 myPinsResponse = response;
-                adapter.setPinList(response.getPinList());
+                adapter.setPinList(data);
                 adapter.notifyDataSetChanged();
                 if(swipe.isRefreshing()) swipe.setRefreshing(false);
-
+                _loading=true;
             }
 
             @Override
             public void onFailure(PDKException exception) {
-                _loading = false;
+
                 Log.e(getClass().getName(), exception.getDetailMessage());
             }
         };
@@ -91,28 +128,24 @@ public class BoardActivityFragment extends Fragment {
 
             }
         });
-        _loading = true;
         return rootView;
     }
     public static void loadNext() {
-        if (!_loading && myPinsResponse.hasNext()) {
-            _loading = true;
+        if (myPinsResponse.hasNext()) {
             myPinsResponse.loadNext(myPinsCallback);
         }
     }
 
-    private static void fetchPins() {
+    private  void fetchPins() {
+        data.clear();
         adapter.setPinList(null);
         adapter.notifyDataSetChanged();
-        PDKClient.getInstance().getBoardPins(boardID,PIN_FIELDS, myPinsCallback);
+        PDKClient.getInstance().getBoardPins(boardID, PIN_FIELDS, myPinsCallback);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        fetchPins();
-    }
-    public static void update() {
         fetchPins();
     }
 }
