@@ -154,7 +154,7 @@ public class PDKClient {
         }
         _requestedScopes = new HashSet<String>();
         _requestedScopes.addAll(permissions);
-
+           final String TAG= "pdk!!!";
 
         if (!Utils.isEmpty(_accessToken) && !Utils.isEmpty(_scopes)) {
 
@@ -167,14 +167,17 @@ public class PDKClient {
                     } else {
                         initiateLogin(context, permissions);
                     }
+
                 }
 
                 @Override
                 public void onFailure(PDKException exception) {
+                    Log.d(TAG, "onFailure ");
                     initiateLogin(context, permissions);
                 }
             });
         } else {
+
             initiateLogin(context, permissions);
         }
     }

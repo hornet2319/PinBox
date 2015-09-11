@@ -30,7 +30,6 @@ import teamvoy.com.pinbox.dialogs.BoardChooserDialog;
 import teamvoy.com.pinbox.dialogs.NewBoardDialog;
 
 public class CreatePinActivity extends AppCompatActivity implements View.OnClickListener {
-    private boolean isBoardChosen=false;
     private ImageView pin_img;
     private static TextView pin_board;
     private EditText pin_note;
@@ -54,10 +53,10 @@ public class CreatePinActivity extends AppCompatActivity implements View.OnClick
         //initializing buttons
         confirm_btn=(Button)findViewById(R.id.save_button);
         cancel_btn=(Button)findViewById(R.id.cancel_button);
-        //set listeners
+        //setting listeners
         confirm_btn.setOnClickListener(this);
         cancel_btn.setOnClickListener(this);
-        //set listener for textView
+        //setting listener for textView
         BoardChooserDialog dialog=new BoardChooserDialog(context);
         dialog.show();
         pin_board.setOnClickListener(new View.OnClickListener() {
@@ -149,11 +148,6 @@ public class CreatePinActivity extends AppCompatActivity implements View.OnClick
                 }
                 else {
                     showNewBoardDialog();
-
-                   // BoardChooserDialog dialog=new BoardChooserDialog(context);
-                   // dialog.show();
-                 /*  NewBoardDialog dialog=new NewBoardDialog(context,true);
-                    dialog.show();*/
                 }
                 break;
             }
