@@ -54,7 +54,9 @@ public class BoardsFragment extends Fragment {
         swipe=(SwipeRefreshLayout)rootView.findViewById(R.id.swipe);
         swipe.setColorSchemeColors(getResources().getColor(R.color.red_dark));
         swipe.setRefreshing(true);
+
         fab=(FloatingActionButton)rootView.findViewById(R.id.fab);
+        fab.setClickable(true);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

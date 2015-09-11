@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dummyfrag_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dim_foreground_material_dark">
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
 
-        android:layout_marginRight="20dp"
-        android:src="@drawable/ic_plus_white"
-        android:layout_gravity="center_vertical|right|end"
-        app:layout_behavior="teamvoy.com.pinbox.utils.ScrollAwareFABBehavior"
-
-        app:elevation="6dp"
-
-        app:layout_anchorGravity="bottom|right"
-        app:backgroundTint="@color/blue"
-        app:pressedTranslationZ="12dp" />
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe"
@@ -34,5 +22,19 @@
 
 
     </android.support.v4.widget.SwipeRefreshLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/ic_plus_white"
+        android:layout_gravity="center_vertical|right|end"
+        app:layout_behavior="teamvoy.com.pinbox.utils.ScrollAwareFABBehavior"
+
+        app:elevation="6dp"
+        app:layout_anchor="@id/dummyfrag_scrollableview"
+        app:layout_anchorGravity="center|right"
+        app:backgroundTint="@color/blue"
+        app:pressedTranslationZ="12dp" />
 
 </android.support.design.widget.CoordinatorLayout>

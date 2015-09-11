@@ -137,9 +137,7 @@ public class CreatePinActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onResume() {
         super.onResume();
-        if (isBoardChosen==true){
-            onClick(confirm_btn);
-        }
+
     }
 
     @Override
@@ -150,28 +148,32 @@ public class CreatePinActivity extends AppCompatActivity implements View.OnClick
                    savePin();
                 }
                 else {
+                    showNewBoardDialog();
 
-                    isBoardChosen=true;
                    // BoardChooserDialog dialog=new BoardChooserDialog(context);
                    // dialog.show();
-                   NewBoardDialog dialog=new NewBoardDialog(context,true);
-                    dialog.show();
+                 /*  NewBoardDialog dialog=new NewBoardDialog(context,true);
+                    dialog.show();*/
                 }
-
+                break;
             }
             case R.id.cancel_button:{
                 onBackPressed();
+                break;
             }
         }
     }
-
+    private void showNewBoardDialog(){
+        NewBoardDialog dialog=new NewBoardDialog(context,true);
+        dialog.show();
+    }
     private void savePin() {
         PDKClient.getInstance().createPin(pin_note.getText().toString(),
                 board.getUid(),pin.getImageUrl(),pin.getLink(),new PDKCallback(){
                     @Override
                     public void onSuccess(PDKResponse response) {
                         super.onSuccess(response);
-
+                        onBackPressed();
                     }
 
                     @Override

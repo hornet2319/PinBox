@@ -1,10 +1,8 @@
 package teamvoy.com.pinbox;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,29 +10,10 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Surface;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
-import com.pinterest.android.pdk.PDKException;
-import com.pinterest.android.pdk.PDKPin;
-import com.pinterest.android.pdk.PDKResponse;
-import com.pinterest.android.pdk.PDKUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,15 +23,10 @@ import teamvoy.com.pinbox.fragments.FollowersFragment;
 import teamvoy.com.pinbox.fragments.InterestsFragment;
 import teamvoy.com.pinbox.fragments.PinsFragment;
 import teamvoy.com.pinbox.fragments.SubscriptionsFragment;
-import teamvoy.com.pinbox.utils.ImageLoaderUtil;
+
 
 public class MainActivity extends AppCompatActivity {
-    ImageLoaderUtil img_util;
-    private ImageView user_img;
-    private TextView user_txt;
     private Context context;
-    private PDKUser user;
-    private ProgressDialog refreshDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +74,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_logout: {
                 PDKClient.getInstance().logout();
-                finish();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
 
             }
             case R.id.action_user:{

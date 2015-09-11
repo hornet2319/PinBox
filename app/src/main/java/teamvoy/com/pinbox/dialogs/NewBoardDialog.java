@@ -50,10 +50,12 @@ public class NewBoardDialog {
             public void onClick(final DialogInterface dialog, int which) {
                 //TODO descrpiption is not aivailable for now
                 if (!name.getText().toString().isEmpty()) {
+                    String TAG="NewBoardDialog";
                     PDKClient.getInstance().createBoard(name.getText().toString(), null, new PDKCallback() {
                         @Override
                         public void onSuccess(PDKResponse response) {
-                           // super.onSuccess(response);
+                            super.onSuccess(response);
+
                             if (!bool)
                             BoardsFragment.update();
                             else CreatePinActivity.setBoard(response.getBoard());
